@@ -1,4 +1,4 @@
-import { createPost } from "../models/postModel.js";
+import { createPost, findAllPosts } from "../models/postModel.js";
 
 export const postPost = async (req, res) => {
   const { title, content } = req.body;
@@ -33,6 +33,39 @@ export const postPost = async (req, res) => {
         },
       });
     }
+
+    return res.status(500).json({
+      status: "error",
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Terjadi kesalahan pada server.",
+      },
+    });
+  }
+};
+
+export const getPosts = async (req, res) => {
+  console.log(req.query);
+  try {
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+
+    const { posts, totalItems } = await findAllPosts(page, limit);
+
+    const totalPages = Math.ceil(totalItems / limit);
+
+    return res.status(200).json({
+      status: "success",
+      metadata: {
+        totalItems: totalItems,
+        totalPages: totalPages,
+        currentPage: page,
+        itemsPerPage: limit,
+      },
+      data: posts,
+    });
+  } catch (error) {
+    console.error(error);
 
     return res.status(500).json({
       status: "error",
