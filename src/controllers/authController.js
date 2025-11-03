@@ -14,10 +14,10 @@ export const postRegister = async (req, res) => {
       [username, email, passwordHash]
     );
 
-    res.status(201).json({ status: "success", data: newUser.rows[0] });
+    return res.status(201).json({ status: "success", data: newUser.rows[0] });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       error: {
         code: "INTERNAL_SERVER_ERROR",
@@ -39,7 +39,7 @@ export const postLogin = async (req, res) => {
     const user = rows[0];
 
     if (!user || !(await bcrypt.compare(password, user.password_hash))) {
-      res.status(401).json({
+      return res.status(401).json({
         status: "fail",
         error: {
           code: "AUTHENTICATION_FAILED",
@@ -60,7 +60,7 @@ export const postLogin = async (req, res) => {
     res.status(200).json({ status: "success", token: token });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({
+    return res.status(500).json({
       status: "error",
       error: {
         code: "INTERNAL_SERVER_ERROR",
