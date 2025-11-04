@@ -1,5 +1,6 @@
 import {
   createPost,
+  deletePost,
   findAllPosts,
   findPostById,
   updatePost,
@@ -168,6 +169,48 @@ export const putPostById = async (req, res) => {
       status: "success",
       data: updatedPostResult.rows[0],
     });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      status: "error",
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Terjadi kesalahan pada server.",
+      },
+    });
+  }
+};
+
+export const deletePostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { id: userId } = req.user;
+
+    const postId = parseInt(id, 10);
+    if (isNaN(postId)) {
+      return res.status(400).json({
+        status: "fail",
+        error: {
+          code: "INVALID_INPUT",
+          message: "ID Post harus berupa angka.",
+        },
+      });
+    }
+
+    const deletedPostResult = await deletePost(postId, userId);
+
+    if (deletedPostResult.rowCount === 0) {
+      return res.status(404).json({
+        status: "fail",
+        error: {
+          code: "RESOURCE_NOT_FOUND",
+          message: `Postingan dengan ID ${postId} tidak ditemukan atau Anda tidak memiliki akses.`,
+        },
+      });
+    }
+
+    return res.status(204).send();
   } catch (error) {
     console.error(error);
 

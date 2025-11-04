@@ -61,3 +61,12 @@ export const updatePost = async (postId, title, content, userId) => {
 
   return updatedPost;
 };
+
+export const deletePost = async (postId, userId) => {
+  const deletedPost = await db.query(
+    "DELETE FROM posts WHERE id = $1 AND user_id = $2",
+    [postId, userId]
+  );
+
+  return deletedPost;
+};
