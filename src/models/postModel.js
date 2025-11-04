@@ -70,3 +70,8 @@ export const deletePost = async (postId, userId) => {
 
   return deletedPost;
 };
+
+export const postExists = async (postId) => {
+  const result = await db.query("SELECT * FROM posts WHERE id = $1", [postId]);
+  return result.rowCount > 0;
+};
