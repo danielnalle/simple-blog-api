@@ -52,3 +52,12 @@ export const findPostById = async (postId) => {
 
   return formattedPost;
 };
+
+export const updatePost = async (postId, title, content, userId) => {
+  const updatedPost = await db.query(
+    "UPDATE posts SET title = $1, content = $2, updated_at = NOW() WHERE id = $3 AND user_id = $4 RETURNING title, content, updated_at",
+    [title, content, postId, userId]
+  );
+
+  return updatedPost;
+};
