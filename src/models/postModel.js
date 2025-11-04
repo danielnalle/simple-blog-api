@@ -25,3 +25,30 @@ export const findAllPosts = async (page = 1, limit = 10) => {
     totalItems: totalItems,
   };
 };
+
+export const findPostById = async (postId) => {
+  const postResult = await db.query(
+    "SELECT p.id, p.title, p.content, p.created_at, p.updated_at, u.id AS author_id, u.username AS author_username FROM posts p LEFT JOIN users u ON p.user_id = u.id WHERE p.id = $1",
+    [postId]
+  );
+
+  const postData = postResult.rows[0];
+
+  if (!postData) {
+    return null;
+  }
+
+  const formattedPost = {
+    id: postData.id,
+    title: postData.title,
+    content: postData.content,
+    created_at: postData.created_at,
+    updated_at: postData.updated_at,
+    author: {
+      id: postData.author_id,
+      username: postData.author_username,
+    },
+  };
+
+  return formattedPost;
+};
