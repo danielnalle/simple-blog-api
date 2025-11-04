@@ -1,4 +1,4 @@
-import { createPost, findAllPosts } from "../models/postModel.js";
+import { createPost, findAllPosts, findPostById } from "../models/postModel.js";
 
 export const postPost = async (req, res) => {
   const { title, content } = req.body;
@@ -62,6 +62,50 @@ export const getPosts = async (req, res) => {
         itemsPerPage: limit,
       },
       data: posts,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      status: "error",
+      error: {
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Terjadi kesalahan pada server.",
+      },
+    });
+  }
+};
+
+export const getPostById = async (req, res) => {
+  const { id } = req.params;
+
+  const postId = parseInt(id, 10);
+  if (isNaN(postId)) {
+    return res.status(400).json({
+      status: "fail",
+      error: {
+        code: "INVALID_INPUT",
+        message: "ID Post harus berupa angka.",
+      },
+    });
+  }
+
+  try {
+    const postData = await findPostById(postId);
+
+    if (!postData) {
+      return res.status(404).json({
+        status: "fail",
+        error: {
+          code: "RESOURCE_NOT_FOUND",
+          message: `Postingan dengan ID ${postId} tidak ditemukan.`,
+        },
+      });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      data: postData,
     });
   } catch (error) {
     console.error(error);
