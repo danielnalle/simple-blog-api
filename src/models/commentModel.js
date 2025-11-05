@@ -17,3 +17,16 @@ export const findCommentByIdWithAuthor = async (commentId) => {
 
   return result.rows[0];
 };
+
+export const findCommentById = async (commentId) => {
+  const result = await db.query(
+    "SELECT id, user_id, post_id FROM comments WHERE id = $1",
+    [commentId]
+  );
+
+  return result.rows[0];
+};
+
+export const deleteComment = async (commentId) => {
+  await db.query("DELETE FROM comments WHERE id = $1", [commentId]);
+};

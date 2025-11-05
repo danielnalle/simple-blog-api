@@ -75,3 +75,10 @@ export const postExists = async (postId) => {
   const result = await db.query("SELECT * FROM posts WHERE id = $1", [postId]);
   return result.rowCount > 0;
 };
+
+export const findAuthorId = async (postId) => {
+  const result = await db.query("SELECT user_id FROM posts WHERE id = $1", [
+    postId,
+  ]);
+  return result.rows[0] ? result.rows[0].user_id : null;
+};
