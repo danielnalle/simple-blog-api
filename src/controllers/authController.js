@@ -1,11 +1,33 @@
 import bcrypt from "bcryptjs";
 import * as db from "../config/db.js";
 import jwt from "jsonwebtoken";
+import { findUser } from "../models/userModel.js";
 
 export const postRegister = async (req, res) => {
-  const { username, email, password } = req.body;
-
   try {
+    const { username, email, password } = req.body;
+
+    if (!username || !email || !password) {
+      return res.status(400).json({
+        status: "fail",
+        error: {
+          code: "VALIDATION_ERROR",
+          message: "Semua field wajib diisi.",
+        },
+      });
+    }
+
+    const userExists = await findUser(email);
+    if (userExists > 0) {
+      return res.status(400).json({
+        status: "fail",
+        error: {
+          code: "VALIDATION_ERROR",
+          message: "Email sudah terdaftar.",
+        },
+      });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
