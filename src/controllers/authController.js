@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import * as db from "../config/db.js";
 import jwt from "jsonwebtoken";
-import { findUser } from "../models/userModel.js";
+import { createUser, findUser } from "../models/userModel.js";
 
 export const postRegister = async (req, res) => {
   try {
@@ -31,12 +31,9 @@ export const postRegister = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const newUser = await db.query(
-      "INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id, username",
-      [username, email, passwordHash]
-    );
+    const newUser = await createUser(username, email, passwordHash);
 
-    return res.status(201).json({ status: "success", data: newUser.rows[0] });
+    return res.status(201).json({ status: "success", data: newUser });
   } catch (error) {
     console.error(error.message);
     return res.status(500).json({
