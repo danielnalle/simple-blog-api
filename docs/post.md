@@ -128,3 +128,50 @@ With Request Param `limit=2` & `page=2` :
   ]
 }
 ```
+
+## Get Single Post
+
+Endpoint : `GET /posts/:id`
+
+Response Body `Success` :
+
+```json
+{
+  "status": "success",
+  "data": {
+    "id": 3,
+    "title": "Postingan ketiga",
+    "content": "Ini postingan ketiga yang dibuat oleh user_id 2",
+    "created_at": "2025-11-03T11:44:51.419Z",
+    "updated_at": "2025-11-03T11:44:51.419Z",
+    "author": {
+      "id": 2,
+      "username": "daniel"
+    }
+  }
+}
+```
+
+Response Body `Fail` :
+
+```json
+{
+  "status": "fail",
+  "error": {
+    "code": "INVALID_INPUT",
+    "message": "ID Post harus berupa angka."
+  }
+}
+```
+
+Response Body `Fail 2` :
+
+```json
+{
+  "status": "fail",
+  "error": {
+    "code": "RESOURCE_NOT_FOUND",
+    "message": "Postingan dengan ID 10 tidak ditemukan."
+  }
+}
+```
