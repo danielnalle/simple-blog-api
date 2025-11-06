@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import * as db from "../config/db.js";
 import jwt from "jsonwebtoken";
-import { createUser, findUser } from "../models/userModel.js";
+import { createUser, findExistingUser } from "../models/userModel.js";
 
 export const postRegister = async (req, res) => {
   try {
@@ -17,7 +17,7 @@ export const postRegister = async (req, res) => {
       });
     }
 
-    const userExists = await findUser(email);
+    const userExists = await findExistingUser(email);
     if (userExists > 0) {
       return res.status(400).json({
         status: "fail",
