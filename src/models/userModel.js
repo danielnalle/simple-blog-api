@@ -16,3 +16,12 @@ export const createUser = async (username, email, passwordHash) => {
 
   return result.rows[0];
 };
+
+export const findUser = async (email) => {
+  const result = await db.query(
+    "SELECT id, username, password_hash FROM users WHERE email = $1",
+    [email]
+  );
+
+  return result;
+};

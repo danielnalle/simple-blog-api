@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
-import * as db from "../config/db.js";
 import jwt from "jsonwebtoken";
-import { createUser, findExistingUser } from "../models/userModel.js";
+import { createUser, findExistingUser, findUser } from "../models/userModel.js";
 
 export const postRegister = async (req, res) => {
   try {
@@ -50,12 +49,18 @@ export const postLogin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const { rows } = await db.query(
-      "SELECT id, username, password_hash FROM users WHERE email = $1",
-      [email]
-    );
+    const userData = await findUser(email);
+    if (userData.rowCount === 0) {
+      return res.status(401).json({
+        status: "fail",
+        error: {
+          code: "AUTHENTICATION_FAILED",
+          message: "Email tidak terdaftar.",
+        },
+      });
+    }
 
-    const user = rows[0];
+    const user = userData.rows[0];
 
     if (!user || !(await bcrypt.compare(password, user.password_hash))) {
       return res.status(401).json({
