@@ -2,7 +2,9 @@
 
 ## Overview
 
-Simple Blog API. Literally like the name, you can create, read, update, and delete a post. It has login and register for authentication. You can add a comment and delete a comment from a post. This is my first (serious ✨) project to become a Backend Developer.
+**Simple Blog API** — Just like the name, this project lets you create, read, update, and delete posts. It includes user authentication with login and registration features. You can also add and delete comments on posts.
+
+This is my first _serious_ ✨ project as I work toward becoming a Backend Developer.
 
 ## Tech Stack
 
