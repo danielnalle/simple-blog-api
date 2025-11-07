@@ -62,3 +62,49 @@ Response Body `Fail 3`:
   }
 }
 ```
+
+## Delete A Comment
+
+Endpoint : `DELETE /comments/:id`
+
+Response Body `Success` :
+
+```json
+{}
+```
+
+Response Body `Fail` :
+
+```json
+{
+  "status": "fail",
+  "error": {
+    "code": "INVALID_INPUT",
+    "message": "ID Comment harus berupa angka."
+  }
+}
+```
+
+Response Body `Fail 2` :
+
+```json
+{
+  "status": "fail",
+  "error": {
+    "code": "RESOURCE_NOT_FOUND",
+    "message": "Komentar dengan ID 11 tidak ditemukan atau Anda tidak memiliki akses."
+  }
+}
+```
+
+Response Body `Fail 3` :
+
+```json
+{
+  "status": "fail",
+  "error": {
+    "code": "FORBIDDEN",
+    "message": "Anda tidak memiliki izin untuk menghapus komentar ini."
+  }
+}
+```
