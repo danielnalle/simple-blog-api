@@ -234,3 +234,37 @@ Response Body `Fail 3` :
   }
 }
 ```
+
+## Delete A Post
+
+Endpoint : `DELETE /posts/:id`
+
+Response Body `Success` :
+
+```json
+{}
+```
+
+Response Body `Fail` :
+
+```json
+{
+  "status": "fail",
+  "error": {
+    "code": "INVALID_INPUT",
+    "message": "ID Post harus berupa angka."
+  }
+}
+```
+
+Response Body `Fail 2` :
+
+```json
+{
+  "status": "fail",
+  "error": {
+    "code": "RESOURCE_NOT_FOUND",
+    "message": "Postingan dengan ID 11 tidak ditemukan atau Anda tidak memiliki akses."
+  }
+}
+```
