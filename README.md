@@ -24,7 +24,7 @@ This is my first _serious_ ✨ project as I work toward becoming a Backend Devel
    npm i
    ```
 
-2. Rename `.env.example` to `.env` and modify all variables based on your environment
+2. Copy `.env.example` and rename to `.env` and modify all variables based on your environment
 
 3. Run locally
 
