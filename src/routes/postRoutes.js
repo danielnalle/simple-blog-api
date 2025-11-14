@@ -11,11 +11,12 @@ import commentRoutes from "./commentRoutes.js";
 
 const router = express.Router();
 
-router.post("/", authMiddleware, postPost);
-router.get("/", getPosts);
-router.get("/:id", getPostById);
-router.put("/:id", authMiddleware, putPostById);
-router.delete("/:id", authMiddleware, deletePostById);
+router.route("/").post(authMiddleware, postPost).get(getPosts);
+router
+  .route("/:id")
+  .get(getPostById)
+  .put(authMiddleware, putPostById)
+  .delete(authMiddleware, deletePostById);
 
 router.use("/:id/comments", commentRoutes);
 
